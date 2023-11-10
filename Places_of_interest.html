@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<!-- 
+Adapted from: J. P. Ocón
+Edited by: Adeline Akansobe
+Purpose: Web Mapping & Open Source GIS, Assessment -  Leaflet Exercise Part2: Mapping Places of 
+interest
+October 20, 2023
+-->
+<head lang="en">
+    <!-- Metadata -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        Mapping Places of Interest
+    </title>
+    <!-- external styles and leaflet-->
+    <!--<link rel="stylesheet" type=""  href="style2.css"></link>-->
+    
+
+    <style>
+        body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh; 
+        margin: 0;
+        font-family: Arial, sans-serif;
+        }
+
+        #mapid {
+        border: 3px solid #000;
+        border-radius: 8px;
+        }
+
+      
+
+    </style>
+</head>
+<body>
+
+    <!-- place holder for the map that would be rendered-->
+    <div id="mapid" style="width: 100%; height: 500px;"></div>
+      
+    <!--Javascripts-->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+    <!--initializing the map-->
+    <script>
+    var map = L.map('mapid').setView([40.7128, -74.0060], 13); 
+    
+    /* Adding multiple tiles*/
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+    /* Adding places of interest*/ // Places will be changed later
+    var marker = L.marker([40.6892, -74.0445]).addTo(map)
+        .bindPopup('Statue of Liberty')
+        .openPopup();
+        
+    L.marker([40.75290210971198, -73.97874609499745]).addTo(map)
+        .bindPopup('SUMMIT One Vanderbilt')
+        .openPopup();
+     
+    L.marker([40.743444203959555, -73.98743279830651]).addTo(map)
+        .bindPopup('National Museum of Mathematics')
+        .openPopup();
+    // Add interactive features
+    function onMapClick(e) {
+        var placeName = prompt("Enter name of the place:");
+            if (placeName && placeName.trim() !== "") {
+                L.marker(e.latlng).addTo(map)
+                    .bindPopup(placeName)
+                    .openPopup();
+            }
+        }
+
+    map.on('click', onMapClick);
+
+        
+   </script>
+</body>
+</html>
+
