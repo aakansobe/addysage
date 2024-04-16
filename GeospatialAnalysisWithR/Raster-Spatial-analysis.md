@@ -190,7 +190,7 @@ plot(s2_1d, main = "N farmers per 0.025 cell")
 plot(s2poly$geometry, add = TRUE)
 ```
 
-<img src="/tmp/RtmpniLVts/preview-4d71afc4d6d.dir/Raster-Spatial-analysis_files/figure-gfm/unnamed-chunk-2-1.png" style="display: block; margin: auto;" />
+<img src="figure-gfm/unnamed-chunk-2-1.png" style="display: block; margin: auto;" />
 
 #### Task 3
 
@@ -248,7 +248,7 @@ districts %>%
 plot(farmersr, add = TRUE, ext = districts)
 ```
 
-<img src="/tmp/RtmpniLVts/preview-4d71afc4d6d.dir/Raster-Spatial-analysis_files/figure-gfm/unnamed-chunk-3-1.png" style="display: block; margin: auto;" />
+<img src="figure-gfm/unnamed-chunk-3-1.png" style="display: block; margin: auto;" />
 
 #### Task 4
 
@@ -281,7 +281,7 @@ plot_noaxes(s, main = "Distance(km) from  farmers")
 plot(farmersrpts$geometry, pch = 20, cex = 0.5, col = "black", add = TRUE)
 ```
 
-<img src="/tmp/RtmpniLVts/preview-4d71afc4d6d.dir/Raster-Spatial-analysis_files/figure-gfm/unnamed-chunk-4-1.png" style="display: block; margin: auto;" />
+<img src="figure-gfm/unnamed-chunk-4-1.png" style="display: block; margin: auto;" />
 
 #### Task 5
 
@@ -327,7 +327,7 @@ zamtmean
 plot(zamtmean, main = "Average Temperature in Zambia")
 ```
 
-<img src="/tmp/RtmpniLVts/preview-4d71afc4d6d.dir/Raster-Spatial-analysis_files/figure-gfm/unnamed-chunk-5-1.png" style="display: block; margin: auto;" />
+<img src="figure-gfm/unnamed-chunk-5-1.png" style="display: block; margin: auto;" />
 
 #### Task 6
 
@@ -363,7 +363,7 @@ legend(x = "bottomright", legend = c("High", "Intermediate", "Low"),
        pch = 15, pt.cex = 3, col = rev(cols), bty = "n")
 ```
 
-<img src="/tmp/RtmpniLVts/preview-4d71afc4d6d.dir/Raster-Spatial-analysis_files/figure-gfm/unnamed-chunk-6-1.png" style="display: block; margin: auto;" />
+<img src="figure-gfm/unnamed-chunk-6-1.png" style="display: block; margin: auto;" />
 
 #### Task 7
 
@@ -399,7 +399,7 @@ legend(x = "bottomright", legend = round(z$mean),
        pch = 15, pt.cex = 3, col = rev(cols), bty = "n")
 ```
 
-<img src="/tmp/RtmpniLVts/preview-4d71afc4d6d.dir/Raster-Spatial-analysis_files/figure-gfm/unnamed-chunk-7-1.png" style="display: block; margin: auto;" />
+<img src="figure-gfm/unnamed-chunk-7-1.png" style="display: block; margin: auto;" />
 
 #### Task 8
 
@@ -481,7 +481,7 @@ s
 plot_noaxes(s, mfrow = c(2, 2), mar = c(1, 1, 3, 1))
 ```
 
-<img src="/tmp/RtmpniLVts/preview-4d71afc4d6d.dir/Raster-Spatial-analysis_files/figure-gfm/unnamed-chunk-8-1.png" style="display: block; margin: auto;" />
+<img src="figure-gfm/unnamed-chunk-8-1.png" style="display: block; margin: auto;" />
 
 #### Task 9
 
@@ -571,7 +571,7 @@ ggplot(temp_stats) +
   bp_theme
 ```
 
-<img src="/tmp/RtmpniLVts/preview-4d71afc4d6d.dir/Raster-Spatial-analysis_files/figure-gfm/unnamed-chunk-9-1.png" style="display: block; margin: auto;" />
+<img src="figure-gfm/unnamed-chunk-9-1.png" style="display: block; margin: auto;" />
 
 #### Task 10
 
@@ -665,4 +665,4 @@ for(i in 1:2)
   plot_noaxes(tempinterp[[i]], main = titles[i])
 ```
 
-<img src="/tmp/RtmpniLVts/preview-4d71afc4d6d.dir/Raster-Spatial-analysis_files/figure-gfm/unnamed-chunk-10-1.png" style="display: block; margin: auto;" />
+<img src="figure-gfm/unnamed-chunk-10-1.png" style="display: block; margin: auto;" />
