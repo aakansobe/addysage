@@ -113,7 +113,8 @@ mask_s <- mask(x = s, mask = districts_ss)
 plot_noaxes(mask_s)
 ```
 
-<img src="C:/Users/Addys/OneDrive/Documents/GitHub/addysage/GeospatialAnalysisWithR/figure-gfm/unnamed-chunk-1-1.png" style="display: block; margin: auto;" />
+<img src="addysage/GeospatialAnalysisWithR
+/figure-gfm//unnamed-chunk-1-1.png" style="display: block; margin: auto;" />
 
 #### Task 2
 
