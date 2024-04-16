@@ -105,12 +105,7 @@ plot_noaxes(mask_s)
 
 <img src="figure-gfm/unnamed-chunk-1-1.png" style="display: block; margin: auto;" />
 
-#### Task 2 
-##### Disaggregate s[[1]] to a resolution of 0.025°, using bilinear interpolation. 
-##### Create new raster where all areas of s2_1d that have values > 35
-##### Set the values of s2_1gt35 that equal 0 to NA.
-##### Convert the resulting raster into an sf object and plot the 
-##### resulting polygons over s2_1d
+#### Task 2: Disaggregate s[[1]] to a resolution of 0.025°, using bilinear interpolation. Create new raster where all areas of s2_1d that have values > 35 Set the values of s2_1gt35 that equal 0 to NA. Convert the resulting raster into an sf object and plot the resulting polygons over s2_1d.
 
 ``` r
 
@@ -184,7 +179,7 @@ plot(s2poly$geometry, add = TRUE)
 
 <img src="figure-gfm/unnamed-chunk-2-1.png" style="display: block; margin: auto;" />
 
-#### Task 3
+#### Task 3: Recreate new grids and sum all farmers within these grids
 
 ``` r
 
@@ -240,7 +235,7 @@ plot(farmersr, add = TRUE, ext = districts)
 
 <img src="figure-gfm/unnamed-chunk-3-1.png" style="display: block; margin: auto;" />
 
-#### Task 4
+#### Task 4 : convert farmers raster in to points and calculate distance form dristricts to farmers.
 
 ``` r
 
@@ -270,7 +265,7 @@ plot(farmersrpts$geometry, pch = 20, cex = 0.5, col = "black", add = TRUE)
 <img src="figure-gfm/unnamed-chunk-4-1.png" style="display: block; margin: auto;" />
 
 
-#### Task 5
+#### Task 5: Download and classify temperature datasets within Zambia
 
 ``` r
 
@@ -333,7 +328,7 @@ legend(x = "bottomright", legend = c("High", "Intermediate", "Low"),
 
 <img src="figure-gfm/unnamed-chunk-6-1.png" style="display: block; margin: auto;" />
 
-#### Task 7 : calculate the mean precipitation within each temperature zone
+#### Task 7 : Calculate the mean precipitation within each temperature zone
 
 ``` r
 
