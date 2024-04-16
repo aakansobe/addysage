@@ -185,11 +185,8 @@ plot(s2poly$geometry, add = TRUE)
 <img src="figure-gfm/unnamed-chunk-2-1.png" style="display: block; margin: auto;" />
 
 #### Task 3
-####
 
 ``` r
-. Mask the results using districts, and then plot the result onto a grey 
-# background of Zambia.
 
 # create new grid from the extent of districts, with resolution of 0.5° 
 # & assign all cells a value of 1
@@ -336,8 +333,7 @@ legend(x = "bottomright", legend = c("High", "Intermediate", "Low"),
 
 <img src="figure-gfm/unnamed-chunk-6-1.png" style="display: block; margin: auto;" />
 
-#### Task 7 : calculate the mean precipitation within each temperature 
-#### zone
+#### Task 7 : calculate the mean precipitation within each temperature zone
 
 ``` r
 
@@ -363,8 +359,7 @@ legend(x = "bottomright", legend = round(z$mean),
 <img src="figure-gfm/unnamed-chunk-7-1.png" style="display: block; margin: auto;" />
 
 
-#### Task 8: Get rainfall and elevation dataset, aggregate elevation data
-#### to rainfall and use these to calculate aspect the these 
+#### Task 8: Get rainfall and elevation dataset, aggregate elevation data to rainfall and use these to calculate aspect
 
 ``` r
 
@@ -516,9 +511,7 @@ ggplot(temp_stats) +
 <img src="figure-gfm/unnamed-chunk-9-1.png" style="display: block; margin: auto;" />
 
 
-#### Task 10: Create districts centrioids and reproject and then extract temperature 
-#### values of these points. Then create an inverse distance weighted model (IDW) of 
-#### temperature values.
+#### Task 10: Create districts centrioids and reproject and then extract temperature values of these points. Then create an inverse distance weighted model (IDW) of temperature values.
 
 ``` r
 
