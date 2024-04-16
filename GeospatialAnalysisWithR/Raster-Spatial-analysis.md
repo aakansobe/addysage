@@ -1,27 +1,17 @@
-unit2-module2 Assignment
+Spatial Analysis of rainfall and percipitation in Zambia
 ================
-AAKansobe
-2024-04-02
 
-`aa346` is the package I developed for the coursework component of
-GEOG246-346 (Geospatial Analysis with R). It currently has three
-functions, `my_number_checker`, `my_multiplier`, and `my_calc`.
+This uses districts, roads, and farmers datasets for spatial analysis within Zambia. 
+It also uses geodata’s worldclim_country function to grab WorldClim’s mean temperature, 
+precipitation dataset for other spatial analysis.
 
 #### Task 1
 
 ``` r
-# Create a subset of districts by extracting districts 22, 26, 53, and 54. Call
-# it districts_ss. Use the extent of districts_ss (ext(districts_ss)) to define
-# the extent of a new raster r, which should have a resolution of 0.1°. Use r 
-# as a template for creating two new rasters, rsamp and rrandn. rsamp should be
-# filled with randomly selected integers ranging between 10 and 50. rrandn 
-# should be filled with random numbers drawn from a normal distribution (rnorm)
-# that has a mean of 30 and standard deviation of 5. Use a seed of 1 in 
-# set.seed. Stack rsamp and rrandn (name the stack s), mask that by 
-# districts_ss, and plot s using plot_noaxes. (Ref: Chunks 1, 3, 4, 16).
 
 library(geospaar)
 
+# read in datasets for districts
 districts <- system.file("extdata/districts.geojson", package = "geospaar") %>% 
   st_read
 #> Reading layer `districts' from data source 
@@ -50,7 +40,7 @@ districts
 #> 9       Chinsali POLYGON ((32.34814 -9.74577...
 #> 10       Chipata POLYGON ((32.95348 -13.2636...
 
-# subsetting districts
+# subsetting districts 22, 26, 53, and 54
 districts_ss <- districts[c(22, 26, 53, 54), ]
 districts_ss
 #> Simple feature collection with 4 features and 1 field
@@ -64,7 +54,7 @@ districts_ss
 #> 53 Mufumbwe POLYGON ((25.57661 -12.9764...
 #> 54   Mumbwa POLYGON ((27.18799 -14.3719...
 
-# defone a new raster with 0.1 resolution
+# define a new raster with 0.1 resolution
 r <- rast((ext(districts_ss)), res = 0.1, crs = crs(districts))
 r
 #> class       : SpatRaster 
@@ -73,7 +63,7 @@ r
 #> extent      : 23.68492, 27.98492, -16.10729, -12.90729  (xmin, xmax, ymin, ymax)
 #> coord. ref. : lon/lat WGS 84 (EPSG:4326)
 
-# Create new rasters: rsamp, rrandn
+# Create new rasters called: rsamp and rrandn
 set.seed(1) 
 rsamp <- r
 values(rsamp) <- sample(10:50, size = ncell(rsamp), replace = TRUE) 
@@ -91,7 +81,7 @@ rsamp
 rrandn <- r
 values(rrandn) <- rnorm(n = ncell(rrandn), mean = 30, sd = 5)
 
-# Stacking the two rasters
+# Stack the two rasters
 l <- list(r, rsamp, rrandn)
 s <- rast(l)
 names(s) <- c("Random Sampled Raster", "Raster from Normal distribution")
@@ -115,14 +105,14 @@ plot_noaxes(mask_s)
 
 <img src="figure-gfm/unnamed-chunk-1-1.png" style="display: block; margin: auto;" />
 
-#### Task 2
+#### Task 2 
+##### Disaggregate s[[1]] to a resolution of 0.025°, using bilinear interpolation. 
+##### Create new raster where all areas of s2_1d that have values > 35
+##### Set the values of s2_1gt35 that equal 0 to NA.
+##### Convert the resulting raster into an sf object and plot the 
+##### resulting polygons over s2_1d
 
 ``` r
-# Disaggregate s[[1]] to a resolution of 0.025°, using bilinear interpolation, 
-# calling the result s2_1d. Select all areas of s2_1d that have values > 35, 
-# creating a new raster s2_1gt35. Set the values of s2_1gt35 that equal 0 to NA.
-# Then convert the resulting raster into an sf object called s2poly. Plot the 
-# resulting polygons over s2_1d. (Ref: Chunks 10, 22, 37).
 
 # disaggregate the rsamp raster to a 0.025 resolution
 s2_1d <- disagg(x = s[[1]], fact = 4, method = "bilinear")
@@ -137,6 +127,7 @@ s2_1d
 #> min value   :              10.12500 
 #> max value   :              49.65625
 
+# filter pixesl > 35
 s2_1gt35 <- s2_1d > 35
 s2_1gt35
 #> class       : SpatRaster 
@@ -152,7 +143,7 @@ s2_1gt35
 # set all values in s2_1gt35 ==0 to NA
 s2_1gt35[s2_1d == 0] <- NA
 
-# convert filtered raster to polygon and then convert polygon to sf 
+# convert filtered rasters to polygon and then convert polygon to sf 
 s2poly <- as.polygons(x = s2_1gt35, dissolve = TRUE) 
 s2poly
 #>  class       : SpatVector 
@@ -165,6 +156,7 @@ s2poly
 #>  values      :                     0
 #>                                    1
 
+# convert polygon to sf
 s2poly <- st_as_sf(s2poly) %>% print()
 #> Simple feature collection with 2 features and 1 field
 #> Geometry type: MULTIPOLYGON
@@ -193,15 +185,14 @@ plot(s2poly$geometry, add = TRUE)
 <img src="figure-gfm/unnamed-chunk-2-1.png" style="display: block; margin: auto;" />
 
 #### Task 3
+####
 
 ``` r
-# Create a new grid from the extent of districts that has a resolution of 0.5°
-# (call it zamr), assigning all cells a value of 1. Then recreate the farmersr 
-# dataset–a raster that sums the number of farmers falling within each grid 
-# cell. Mask the results using districts, and then plot the result onto a grey 
-# background of Zambia. (Ref: Chunk 8, 37)
+. Mask the results using districts, and then plot the result onto a grey 
+# background of Zambia.
 
-# create new grid
+# create new grid from the extent of districts, with resolution of 0.5° 
+# & assign all cells a value of 1
 zamr <- rast(x = ext(districts), res = 0.5, crs = crs(districts))
 values(zamr) <- 1:ncell(zamr)
 zamr
@@ -219,6 +210,8 @@ zamr
 farmers <- system.file("extdata/farmer_spatial.csv", package = "geospaar") %>%
   read_csv(show_col_types = FALSE) 
 
+# Recreate raster that sums the number of farmers falling within each grid 
+# cell
 farmersr <- farmers %>% 
   distinct(uuid, .keep_all = TRUE) %>% 
   dplyr::select(x, y) %>% 
@@ -253,21 +246,17 @@ plot(farmersr, add = TRUE, ext = districts)
 #### Task 4
 
 ``` r
-# Convert the rasterized farmers counts (farmersr) back into an sf points 
-# object farmersrpts. Create a new version of zamr at 0.05°, and then calculate
-# the distance between these points and every other location in Zambia, 
-# creating an output grid of distances, called dist_to_farmers, which you mask 
-# by districts. Plot dist_to_farmers in kilometers (i.e. divide it by 1000) 
-# using plot_no_axes, with farmersrpts overlaid as black solid circles. 
-# (Ref: Chunks 8, 10, 47)
 
+# convert farmersr raster into point using as.point
 farmersrpts <- as.points(x = farmersr) %>% 
   st_as_sf
+
 
 zamr <- rast(x = ext(districts), res = 0.05, crs = crs(districts))
 values(zamr) <- 1:ncell(zamr)
 #plot(zamr)
 
+# Spatial analysis of distance from dristricts to farmers
 dist_to_farmers <- distance(x = zamr, y = farmersrpts)
 #> |---------|---------|---------|---------|=========================================                                          
 dist_to_farmers <- mask(dist_to_farmers, districts)
@@ -283,20 +272,16 @@ plot(farmersrpts$geometry, pch = 20, cex = 0.5, col = "black", add = TRUE)
 
 <img src="figure-gfm/unnamed-chunk-4-1.png" style="display: block; margin: auto;" />
 
+
 #### Task 5
 
 ``` r
-# Use geodata’s worldclim_country function to grab WorldClim’s mean temperature 
-# minutes of a degree), and download it to somewhere on your local disk. That 
-# will give a SpatRaster with 12 layers, with each layer representing the 
-# average monthly temperature for each grid cell on the planet. Calculate the 
-# annual mean temperature for each cell, and then  mask the result using  
-# districts to get your final raster, zamtmean. Plot the result.
 
 install.packages("geodata")
 library(geodata)
 
-# download average monthly temperature dataset
+# download average monthly temperature dataset from WorldClim’s in my temporary
+# directory
 tmean <- geodata::worldclim_country(var = "tavg", res = 2.5, 
                                      country = "Zambia", path = tempdir())
 tmean
@@ -310,7 +295,7 @@ tmean
 #> min values  :        12.4,        12.5,        12.3,        11.7,        10.2,         8.4, ... 
 #> max values  :        28.7,        28.5,        28.3,        27.9,        27.0,        25.9, ...
 
-# calculate annual temp. andmask it with districts
+# calculate annual temp. and mask it with districts
 zamtmean <- mask(app(tmean, mean), districts)
 zamtmean
 #> class       : SpatRaster 
@@ -329,23 +314,9 @@ plot(zamtmean, main = "Average Temperature in Zambia")
 
 <img src="figure-gfm/unnamed-chunk-5-1.png" style="display: block; margin: auto;" />
 
-#### Task 6
-
-#### Answer: The floor function is used to round down the numeric values to the
-
-#### nearest integer that is less than or equal to the input value. eg the
-
-#### lowest value 15.04 in trng would be 15. While the ceiling function rounds
-
-#### up a numeric value to the nearest integer that is greater than or equal to
-
-#### the input value.
+#### Task 6: Classify  the mean temperature into 3 zones
 
 ``` r
-# Classify the temperature data into three categories, low, medium, and high, 
-# using <20°, 20-24°, and >24° as the break points for determining the classes.
-# Use the reclassify function with a reclassification matrix, which you should 
-# do like this:
 
 trng <- global(zamtmean, range, na.rm = TRUE)
 
@@ -365,18 +336,10 @@ legend(x = "bottomright", legend = c("High", "Intermediate", "Low"),
 
 <img src="figure-gfm/unnamed-chunk-6-1.png" style="display: block; margin: auto;" />
 
-#### Task 7
+#### Task 7 : calculate the mean precipitation within each temperature 
+#### zone
 
 ``` r
-# Recreate the zamprec dataset (chunk 48), then calculate the mean precipitation
-# within each temperature zone defined by zamtclass. Call the resulting matrix 
-# z. Map the mean zonal precipitation values in z onto each temperature zone 
-# (using the subst function with zamtclass as the target; remember that zonal 
-# returns a matrix, and that subst requires equal length vector for the “from” 
-# and “to” values. Call the new raster zamprecz, and then  plot it using 
-# plot_noaxes, with a custom legend (as done in Task 6), using the rounded zonal
-# mean values (rounded) as the legend labels (legend = round(z$mean)). Use 
-# colors “yellow2”, “green3”, and “blue” for the three classes 
 
 # down load precipitation dataset
 wcprec <- geodata::worldclim_country(var = "prec", res = 2.5, 
@@ -384,8 +347,6 @@ wcprec <- geodata::worldclim_country(var = "prec", res = 2.5,
 zamprec <- mask(app(wcprec, sum), districts)
 
 # mean precipitation within each temperature zones in zamtclass 1,2,3
-#distsr_rs <- resample(x = rast(zamprec), y = zamtclass, method = "near")
-
 z <- zonal(zamprec, z = zamtclass, fun = "mean", na.rm = TRUE)
 
 # plot
@@ -401,20 +362,13 @@ legend(x = "bottomright", legend = round(z$mean),
 
 <img src="figure-gfm/unnamed-chunk-7-1.png" style="display: block; margin: auto;" />
 
-#### Task 8
+
+#### Task 8: Get rainfall and elevation dataset, aggregate elevation data
+#### to rainfall and use these to calculate aspect the these 
 
 ``` r
-# Use geodata::elevation_30s again to download the elevation raster for Zambia 
-# (call it dem). Aggregate it to the same resolution as chirps, using the 
-# default mean aggregation, and mask it using districts. Call that dem5. Use 
-# terrain to calculate aspect from dem5 (call it aspect), selecting degrees as 
-# the output value. Then find all west-facing aspects (aspects >247.5 and 
-# <292.5), and all east facing aspects (>67.5 and <112.5), making new rasters 
-# respectively named west and east, e.g. west <- aspect > 247.5 & 
-# aspect < 292.5). Stack these together with aspect and make a three-panel plot 
-# with plot_noaxes with titles “Aspect”, “West”, and “East”. (Ref: Chunks 37, 42)
 
-# rainfall dataset
+# download rainfall dataset
 chirps <- rast(system.file("extdata/chirps.tif", package = "geospaar"))
 chirps
 #> class       : SpatRaster 
@@ -427,7 +381,7 @@ chirps
 #> min values  :  0.00000,  0.00000,  0.00000,  0.00000,  0.00000,  0.0000, ... 
 #> max values  : 21.33322, 17.76521, 22.12555, 32.39063, 19.46936, 28.5387, ...
 
-# elevation dataset
+# download elevation dataset
 dem <- geodata::elevation_30s(country = "ZMB", path = tempdir())
 dem
 #> class       : SpatRaster 
@@ -440,11 +394,11 @@ dem
 #> min value   :         327 
 #> max value   :        2286
 
-# aggregate and mask by districts
+# aggregate the elevation to that of chirps and mask by districts
 dem5 <- aggregate(x = dem, fact = 6.00000024000001) %>% 
   mask(., mask = districts)
   
-# calculate aspect
+# calculate aspect from the aggregated elevation raster
 aspect <- terrain(x = dem5, v = 'aspect', unit = 'degrees')
 aspect
 #> class       : SpatRaster 
@@ -483,23 +437,10 @@ plot_noaxes(s, mfrow = c(2, 2), mar = c(1, 1, 3, 1))
 
 <img src="figure-gfm/unnamed-chunk-8-1.png" style="display: block; margin: auto;" />
 
-#### Task 9
+
+#### Task 9: Create random rasters, covert them to sf and extract mean temperature values
 
 ``` r
-# Using a random seed of 1, create two random samples of 100 each. The first one
-# should be collected from within the west-facing cells (i.e. only be drawn from
-# cells in west that have a cell of one), and the second from east-facing cells.
-# To do this, set the cells equal to 0 in east and west to NA 
-# (e.g. west[west == 0] <- NA). Once you have collected those, convert the 
-# resulting objects to sf, and use those two sets of points to extract 
-# temperature values from zamtmean into a tibble temp_stats, which is going to 
-# look this:
-#temp_stats <- bind_rows(
-  #tibble(temp = terra::extract(zamtmean, westpts)$mean, dat = "West"), 
-  #tibble(temp = terra::extract(zamtmean, eastpts)$mean, dat = "East"))
-# Then use temp_stats with ggplot to make side-by-side boxplots to compare the 
-# distributions of west and east facing temperatures, modeled on the example in
-# Chunk 40. (Ref: Chunks 37, 40)
 
 # set the cells equal to 0 in east and west to NA
 west[west == 0] <- NA
@@ -529,6 +470,7 @@ westpts
 #> 9  29816   TRUE POINT (24.275 -14.275)
 #> 10  7642   TRUE  POINT (28.775 -9.675)
 
+# convert sample rasters into points
 eastpts <- spatSample(x = east, size = 100, 
                       cells = TRUE,  xy = TRUE, na.rm = TRUE)%>% 
   st_as_sf(coords = c("x", "y")) 
@@ -573,26 +515,12 @@ ggplot(temp_stats) +
 
 <img src="figure-gfm/unnamed-chunk-9-1.png" style="display: block; margin: auto;" />
 
-#### Task 10
+
+#### Task 10: Create districts centrioids and reproject and then extract temperature 
+#### values of these points. Then create an inverse distance weighted model (IDW) of 
+#### temperature values.
 
 ``` r
-# Extra credit worth (5 points). Extract the centroids from each district in 
-# districts (call it dcent), and reproject the points to Albers, using the 
-# st_crs(roads). Reproject zamtmean to Albers also, making the new resolution 
-# (5 km, i.e. 5000 m), using bilinear interpolation (call it zamtmeanalb). Then 
-# use dcent to extract the temperature values from zamtmeanalb (add the values 
-# to dcent as a new variable “temp” using mutate). Use gstat to create an IDW 
-# model (call it idw). To make the IDW work, which isn’t sf compliant, some 
-# extra work will be required, as shown below (this is the step needed after the
-# extract of temperature values). 
-# This yields a tibble with columns x and y that are needed by gstat. After 
-# running gstat, map the interpolated temperatures using zamtmeanalb as a target
-# object (it won’t be overwritten) and idw as the model. Make sure you mask the 
-# result to the boundaries of Zambia, using zamtmeanalb as the mask. Call the 
-# new interpolated, masked grid zamtidw. Plot the result side by side with 
-# zamtmeanalb for comparison using plot_noaxes with titles “Real Temperature” 
-# and “IDW Temperature”.
-
 
 # read in roads dataset
 roads <- system.file("extdata/roads.geojson", package = "geospaar") %>% st_read
