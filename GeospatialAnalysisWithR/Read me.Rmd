@@ -1,8 +1,10 @@
 ---
 title: "Read me"
 author: "AAKansobe"
-date: "2024-04-17"
 output: html_document
 ---
 
-This uses districts, roads, and farmers datasets for spatial analysis within Zambia. It also uses geodata’s worldclim_country function to grab WorldClim’s mean temperature, precipitation dataset for other spatial analysis.
+This uses districts, roads, and farmers datasets for spatial 
+analysis within Zambia. It also uses geodata’s worldclim_country 
+function to grab WorldClim’s mean temperature, precipitation dataset 
+for other spatial analysis.
