@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<!-- 
+Adapted svg and intial template from : https://dev.to/codecustard/creating-an-interactive-map-of-the-us-b5o 
+CodePen: https://codepen.io/vinay-khatri/pen/LYdyoNZ  
+Original author: Vinay Khatri
+
+Edited by: Adeline Akansobe
+Purpose: Web Mapping & Open Source GIS, Assignment 2- Polish Wedsite with Interactive SVG
+September 21, 2023
+-->
+
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+      <title>Forest Change within Tarkwa</title>
+	<!-- <SCRIPT TYPE="text/javascript">
+        	window.alert( "Welcome\n to the world\nof mining! ");
+    	</SCRIPT>-->
+
+      <!--style from css sheet from my assessment tutorial-->     
+      <link rel="stylesheet" href="style_copy.css">
+      <link rel="stylesheet" type="text/css"  href="style2.css">
+
+
+    <!-- icons  script for slide and github icons-->
+      <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    
+
+    <!--making use of Internal styling-->
+      <style id="INLINE_PEN_STYLESHEET_ID">
+        {
+        margin: 0px;
+        padding: 0px;
+        box-sizing: border-box;
+        }    
+   
+        body {
+        font-family: Georgia, "Times New Roman", Times, serif;
+        color: white;
+        background-color: rgb(177, 175, 175);
+        }
+
+        /* Styles for header and navigation*/
+        nav {
+         background-color: rgba(53, 60, 37, 0.8);
+	      display: flex;
+	      justify-content: space-between;
+	      padding: 5px 25px;
+	      align-items: center;
+         height: 100px;
+   	   }
+
+        .logo {
+	      flex: 1;
+         padding:10px 00px;
+	      }
+    
+	    .item {
+	      display: flex;
+	      align-items: center;
+	      gap: 100px;
+	      }
+         .item li {
+	      padding: 0px 0px;
+         font-size: 16px;
+	      }     
+      </style>
+   </head>
+
+<body>  
+   <!-- Creating web app in GEE and and adding the link here using the <iframe> Tag -->
+   <section>
+       <!--the scr is the link to my fisrt app created-->
+      
+      <iframe src="https://addy.users.earthengine.app/view/forestlossminingtowns" width="100%" height="800"></iframe>
+
+
+   </section>
+    
+
+</body>
+</html>
