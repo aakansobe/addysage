@@ -1,0 +1,1 @@
+This is a google earth engine app that i created to highlight flooded areas in Plum Island, Massachusetts during time period June-December 2020.
